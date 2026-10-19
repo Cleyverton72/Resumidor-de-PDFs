@@ -1,0 +1,164 @@
+/* Define as cores, os tamanhos e as sombras principais. */
+:root {
+  --navy: #17233d;
+  --lime: #d7ff5f;
+  --purple: #6869df;
+  --purple-soft: #eeeeff;
+  --ink: #172033;
+  --muted: #687389;
+  --line: #dfe4ed;
+  --paper: #ffffff;
+  --background: #f5f7fb;
+  --danger: #b42318;
+  --shadow: 0 22px 65px rgba(23, 35, 61, 0.12);
+}
+
+/* Faz bordas e preenchimentos entrarem no tamanho dos elementos. */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* Garante que elementos marcados como escondidos não apareçam antes da hora. */
+[hidden] { display: none !important; }
+
+/* Define o visual geral da página. */
+body {
+  margin: 0;
+  min-width: 320px;
+  background: radial-gradient(circle at 15% 5%, rgba(104, 105, 223, 0.09), transparent 28rem), var(--background);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+}
+
+/* Faz campos e botões usarem a fonte da página. */
+button, textarea, input { font: inherit; }
+.container { width: min(1180px, calc(100% - 32px)); margin-inline: auto; }
+
+/* Cria a barra branca fixa no topo. */
+.topbar { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(223, 228, 237, 0.85); background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(18px); }
+.topbar__content { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+
+/* Estiliza a marca do projeto. */
+.brand { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
+.brand__icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: var(--navy); color: var(--lime); font-weight: 900; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: 1.05rem; letter-spacing: -0.02em; }
+.brand small { margin-top: 2px; color: var(--muted); font-size: 0.76rem; }
+
+/* Compartilha o visual básico dos botões. */
+.button { border: 0; border-radius: 12px; cursor: pointer; font-weight: 750; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease; }
+.button:hover { transform: translateY(-1px); }
+.button:focus-visible, .dropzone:focus-visible, .tab:focus-visible, .copy-button:focus-visible { outline: 3px solid rgba(104, 105, 223, 0.3); outline-offset: 2px; }
+.button--quiet { padding: 10px 15px; background: #eef1f6; color: var(--navy); }
+.button--primary { width: 100%; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 24px; background: var(--purple); color: white; box-shadow: 0 12px 28px rgba(104, 105, 223, 0.28); }
+.button--primary:hover { background: #595acb; box-shadow: 0 15px 32px rgba(104, 105, 223, 0.34); }
+.button:disabled { cursor: wait; opacity: 0.7; transform: none; }
+
+/* Organiza a apresentação inicial. */
+.intro { max-width: 790px; padding: 58px 0 34px; }
+.eyebrow { display: inline-flex; padding: 7px 11px; border-radius: 999px; background: var(--purple-soft); color: #5455ba; font-size: 0.76rem; font-weight: 850; letter-spacing: 0.09em; text-transform: uppercase; }
+.intro h1 { margin: 18px 0 15px; font-size: clamp(2.1rem, 5vw, 4.2rem); line-height: 1.02; letter-spacing: -0.055em; }
+.intro p { max-width: 680px; margin: 0; color: var(--muted); font-size: 1.08rem; line-height: 1.75; }
+
+/* Cria as duas colunas principais. */
+.workspace { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 22px; align-items: stretch; }
+.panel { overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: var(--paper); box-shadow: var(--shadow); }
+.panel--input { padding: 25px; }
+.panel--result { min-height: 690px; background: var(--navy); color: white; }
+
+/* Formata o título do painel de entrada. */
+.panel__heading { display: flex; align-items: center; gap: 13px; margin-bottom: 20px; }
+.panel__heading h2, .result-heading h2 { margin: 0; font-size: 1.1rem; }
+.panel__heading p, .result-heading p { margin: 5px 0 0; color: var(--muted); font-size: 0.84rem; }
+.step { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--purple-soft); color: #5758c9; font-weight: 850; }
+
+/* Esconde o campo de arquivo sem prejudicar leitores de tela. */
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Cria a área de envio de documentos. */
+.dropzone { width: 100%; min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1.5px dashed #c9d0dc; border-radius: 18px; background: #fafbfe; color: var(--ink); cursor: pointer; transition: border 160ms ease, background 160ms ease, transform 160ms ease; }
+.dropzone:hover, .dropzone.is-dragging { border-color: var(--purple); background: var(--purple-soft); transform: translateY(-1px); }
+.dropzone span { color: var(--muted); font-size: 0.86rem; }
+.dropzone__icon { width: 42px; height: 42px; display: grid; place-items: center; margin-bottom: 4px; border-radius: 13px; background: var(--purple-soft); color: var(--purple) !important; font-size: 1.5rem !important; font-weight: 900; }
+
+/* Mostra os dados do arquivo escolhido. */
+.file-card { min-height: 76px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 13px; border: 1px solid var(--line); border-radius: 16px; background: #fafbfe; }
+.file-card__icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 11px; background: #ffe9e7; color: var(--danger); font-size: 0.7rem; font-weight: 900; }
+.file-card strong, .file-card span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-card strong { max-width: 300px; font-size: 0.9rem; }
+.file-card div span { margin-top: 4px; color: var(--muted); font-size: 0.76rem; }
+.file-card button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 1.5rem; }
+
+/* Desenha o separador com texto no centro. */
+.divider { display: flex; align-items: center; gap: 10px; margin: 20px 0; color: #98a1b1; font-size: 0.75rem; text-transform: uppercase; }
+.divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+
+/* Estiliza o campo principal de texto. */
+.field-label { display: block; margin: 18px 0 9px; color: #384259; font-size: 0.86rem; font-weight: 750; }
+textarea { width: 100%; min-height: 205px; resize: vertical; border: 1px solid var(--line); border-radius: 15px; padding: 15px; color: #3d475c; line-height: 1.65; outline: none; }
+textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(104, 105, 223, 0.1); }
+.text-meta, .range-labels { display: flex; justify-content: space-between; gap: 12px; margin-top: 7px; color: #8a93a3; font-size: 0.72rem; }
+input[type="range"] { width: 100%; accent-color: var(--purple); cursor: pointer; }
+
+/* Organiza o cabeçalho do resultado. */
+.result-heading { min-height: 92px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.result-heading p { color: rgba(255, 255, 255, 0.5); }
+.done-badge { color: var(--lime); font-size: 0.76rem; font-weight: 800; }
+
+/* Centraliza o estado inicial do painel de resultado. */
+.empty-state { min-height: 596px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 42px; text-align: center; }
+.empty-state__icon { width: 62px; height: 62px; display: grid; place-items: center; border: 1px solid rgba(215, 255, 95, 0.3); border-radius: 20px; background: rgba(215, 255, 95, 0.08); color: var(--lime); font-size: 1.5rem; }
+.empty-state h3 { margin: 22px 0 8px; font-size: 1.3rem; }
+.empty-state > p { max-width: 380px; margin: 0; color: rgba(255, 255, 255, 0.55); line-height: 1.6; }
+.empty-state ol { width: min(100%, 360px); margin: 30px 0 0; padding: 0; list-style: none; text-align: left; }
+.empty-state li { display: flex; align-items: center; gap: 11px; padding: 10px 0; color: rgba(255, 255, 255, 0.72); font-size: 0.86rem; }
+.empty-state li span { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 255, 255, 0.08); color: var(--lime); font-weight: 800; }
+
+/* Cria a área branca onde cada aba é apresentada. */
+.result { min-height: 598px; padding: 20px; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 13px; background: rgba(255, 255, 255, 0.08); }
+.tab { min-height: 40px; border: 0; border-radius: 10px; background: transparent; color: rgba(255, 255, 255, 0.58); cursor: pointer; font-size: 0.86rem; font-weight: 750; }
+.tab.is-active { background: white; color: var(--navy); }
+.tab-panel { min-height: 490px; margin-top: 15px; padding: 25px; border-radius: 18px; background: white; color: var(--ink); }
+
+/* Formata os títulos internos do resultado. */
+.section-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.section-title span { color: #5758c9; font-size: 0.72rem; font-weight: 850; letter-spacing: 0.1em; text-transform: uppercase; }
+.section-title h3 { margin: 7px 0 0; font-size: 1.25rem; }
+.copy-button { border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; background: white; color: var(--muted); cursor: pointer; font-size: 0.78rem; font-weight: 750; }
+.summary-text { margin: 25px 0 0; color: #566176; font-size: 1rem; line-height: 1.9; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; padding-top: 20px; border-top: 1px solid #edf0f4; }
+.stats span { padding: 7px 10px; border-radius: 999px; background: #f1f3f7; color: var(--muted); font-size: 0.74rem; font-weight: 750; }
+
+/* Organiza os tópicos e as perguntas. */
+.topic-list, .question-list { margin: 24px 0 0; padding: 0; list-style: none; }
+.topic-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; counter-reset: topic; }
+.topic-list li { display: flex; align-items: center; gap: 10px; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fafbfc; font-weight: 700; counter-increment: topic; }
+.topic-list li::before { content: counter(topic); width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 9px; background: var(--purple-soft); color: #5758c9; font-size: 0.78rem; }
+.question-list { display: grid; gap: 10px; counter-reset: question; }
+.question-list li { position: relative; padding: 14px 14px 14px 50px; border: 1px solid var(--line); border-radius: 12px; color: #566176; line-height: 1.55; counter-increment: question; }
+.question-list li::before { content: counter(question, decimal-leading-zero); position: absolute; left: 15px; top: 15px; color: #5758c9; font-size: 0.78rem; font-weight: 900; }
+
+/* Formata o rodapé e as mensagens rápidas. */
+footer { display: flex; justify-content: space-between; gap: 15px; padding: 22px 2px 35px; color: #8993a4; font-size: 0.76rem; }
+.toast { position: fixed; right: 22px; bottom: 22px; z-index: 20; max-width: min(360px, calc(100% - 44px)); padding: 13px 16px; border-radius: 12px; background: var(--navy); color: white; box-shadow: var(--shadow); font-weight: 700; }
+.toast.is-error { background: var(--danger); }
+
+/* Ajusta a aplicação para tablets e celulares. */
+@media (max-width: 880px) {
+  .workspace { grid-template-columns: 1fr; }
+  .panel--result { min-height: 640px; }
+}
+
+@media (max-width: 560px) {
+  .container { width: min(100% - 20px, 1180px); }
+  .topbar__content { min-height: 68px; }
+  .brand small { display: none; }
+  .button--quiet { padding: 9px 11px; font-size: 0.8rem; }
+  .intro { padding-top: 40px; }
+  .intro h1 { font-size: 2.35rem; }
+  .panel--input, .tab-panel { padding: 18px; }
+  .topic-list { grid-template-columns: 1fr; }
+  .text-meta span:last-child, .range-labels span:nth-child(2) { display: none; }
+  footer { flex-direction: column; }
+}

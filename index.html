@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- Informa ao navegador que a página usa HTML moderno. -->
+<html lang="pt-BR">
+  <head>
+    <!-- Define a codificação, a adaptação para celulares e os dados da página. -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Resuma textos e PDFs e gere tópicos-chave e perguntas de revisão." />
+    <title>Síntese — Resumidor de PDFs</title>
+    <!-- Cria o ícone da aba sem depender de outro arquivo. -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d7ff5f'/%3E%3Cpath d='M20 15h17l9 9v25H20z' fill='%2317233d'/%3E%3Cpath d='M37 15v10h9M26 32h14M26 39h14' fill='none' stroke='%23d7ff5f' stroke-width='3'/%3E%3C/svg%3E" />
+    <!-- Carrega o visual, o leitor de PDF e o comportamento da aplicação. -->
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- Cabeçalho com a marca e o botão para recomeçar. -->
+    <header class="topbar">
+      <div class="topbar__content container">
+        <a class="brand" href="#inicio" aria-label="Voltar ao início do Síntese">
+          <span class="brand__icon" aria-hidden="true">S</span>
+          <span><strong>Síntese</strong><small>Resumidor de estudos</small></span>
+        </a>
+        <button class="button button--quiet" id="resetButton" type="button">Novo resumo</button>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal da ferramenta. -->
+    <main class="container" id="inicio">
+      <!-- Apresenta o objetivo da aplicação. -->
+      <section class="intro" aria-labelledby="pageTitle">
+        <span class="eyebrow">Estude com mais clareza</span>
+        <h1 id="pageTitle">Transforme conteúdo longo em material de revisão.</h1>
+        <p>Envie um PDF ou TXT, ou cole um texto. O Síntese gera um resumo, tópicos-chave e perguntas para você revisar.</p>
+      </section>
+
+      <!-- Divide a tela entre a entrada e o resultado. -->
+      <div class="workspace">
+        <!-- Painel onde o usuário fornece o conteúdo. -->
+        <section class="panel panel--input" aria-labelledby="inputTitle">
+          <div class="panel__heading">
+            <span class="step">1</span>
+            <div><h2 id="inputTitle">Adicione seu conteúdo</h2><p>PDF ou TXT com até 15 MB</p></div>
+          </div>
+
+          <!-- Campo invisível que abre a seleção de arquivos. -->
+          <input id="fileInput" class="visually-hidden" type="file" accept="application/pdf,text/plain,.pdf,.txt" />
+          <!-- Área clicável que também aceita arquivos arrastados. -->
+          <button class="dropzone" id="dropzone" type="button">
+            <span class="dropzone__icon" aria-hidden="true">⇧</span>
+            <strong>Arraste seu arquivo para cá</strong>
+            <span>ou clique para escolher</span>
+          </button>
+
+          <!-- Mostra o arquivo selecionado e começa escondido. -->
+          <div class="file-card" id="fileCard" hidden>
+            <span class="file-card__icon" aria-hidden="true">PDF</span>
+            <div><strong id="fileName">Documento selecionado</strong><span id="fileSize">0 KB</span></div>
+            <button id="removeFileButton" type="button" aria-label="Remover arquivo">×</button>
+          </div>
+
+          <!-- Separa o envio do arquivo do campo de texto. -->
+          <div class="divider"><span>ou cole o texto</span></div>
+          <label class="field-label" for="sourceText">Conteúdo para resumir</label>
+          <textarea id="sourceText" placeholder="Cole aqui um artigo, capítulo, anotação ou outro conteúdo…"></textarea>
+          <div class="text-meta"><span id="wordCount">0 palavras</span><span>Mínimo recomendado: 80 caracteres</span></div>
+
+          <!-- Permite escolher o tamanho do resumo. -->
+          <label class="field-label" for="detailLevel">Nível de detalhe: <strong id="detailLabel">Equilibrado</strong></label>
+          <input id="detailLevel" type="range" min="1" max="3" value="2" />
+          <div class="range-labels"><span>Essencial</span><span>Equilibrado</span><span>Detalhado</span></div>
+
+          <!-- Inicia a análise do conteúdo. -->
+          <button class="button button--primary" id="summarizeButton" type="button"><span aria-hidden="true">✦</span> Gerar material de estudo</button>
+        </section>
+
+        <!-- Painel que recebe o resumo e os materiais de revisão. -->
+        <section class="panel panel--result" aria-labelledby="resultTitle">
+          <div class="result-heading">
+            <div><h2 id="resultTitle">Seu material</h2><p>Pronto para entender e revisar</p></div>
+            <span class="done-badge" id="doneBadge" hidden>✓ Concluído</span>
+          </div>
+
+          <!-- Estado mostrado antes de gerar um resumo. -->
+          <div class="empty-state" id="emptyState">
+            <span class="empty-state__icon" aria-hidden="true">✦</span>
+            <h3>Seu resumo aparecerá aqui</h3>
+            <p>Adicione um conteúdo ao lado e escolha o nível de detalhe para começar.</p>
+            <ol>
+              <li><span>1</span> Envie ou cole o conteúdo</li>
+              <li><span>2</span> Escolha o nível de detalhe</li>
+              <li><span>3</span> Gere e revise o material</li>
+            </ol>
+          </div>
+
+          <!-- Resultado completo; começa escondido. -->
+          <div class="result" id="resultArea" hidden>
+            <!-- Botões que trocam a parte exibida. -->
+            <div class="tabs" role="tablist" aria-label="Partes do material de estudo">
+              <button class="tab is-active" type="button" role="tab" data-tab="summary">Resumo</button>
+              <button class="tab" type="button" role="tab" data-tab="topics">Tópicos</button>
+              <button class="tab" type="button" role="tab" data-tab="questions">Revisão</button>
+            </div>
+
+            <!-- Aba do resumo e de suas estatísticas. -->
+            <article class="tab-panel is-active" data-panel="summary">
+              <div class="section-title"><div><span>Resumo gerado</span><h3>Visão geral</h3></div><button class="copy-button" id="copyButton" type="button">Copiar</button></div>
+              <p class="summary-text" id="summaryText"></p>
+              <div class="stats"><span id="originalWords"></span><span id="readingTime"></span></div>
+            </article>
+
+            <!-- Aba com os assuntos mais importantes. -->
+            <article class="tab-panel" data-panel="topics" hidden>
+              <div class="section-title"><div><span>Ideias centrais</span><h3>Tópicos-chave</h3></div></div>
+              <ol class="topic-list" id="topicList"></ol>
+            </article>
+
+            <!-- Aba com perguntas para revisão ativa. -->
+            <article class="tab-panel" data-panel="questions" hidden>
+              <div class="section-title"><div><span>Recuperação ativa</span><h3>Perguntas de revisão</h3></div></div>
+              <ol class="question-list" id="questionList"></ol>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- Rodapé com privacidade e formatos aceitos. -->
+      <footer><span>Processamento local · seus documentos permanecem no seu dispositivo</span><span>PDF e TXT · até 15 MB</span></footer>
+    </main>
+
+    <!-- Mensagem rápida usada para informar sucesso ou erro. -->
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

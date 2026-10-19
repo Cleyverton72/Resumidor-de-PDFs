@@ -1,0 +1,72 @@
+/* Importa as classes utilitárias do Tailwind CSS. */
+@import "tailwindcss";
+/* Adiciona utilitários de animação. */
+@import "tw-animate-css";
+/* Importa o tema-base dos componentes reutilizáveis. */
+@import "../vendor/shadcn-tailwind-4.13.0.css";
+
+/* Variáveis centrais do tema: cores, bordas e arredondamentos. */
+:root {
+  --background: #f4f6fb;
+  --foreground: #17233d;
+  --card: #ffffff;
+  --card-foreground: #17233d;
+  --popover: #ffffff;
+  --popover-foreground: #17233d;
+  --primary: #17233d;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f7;
+  --secondary-foreground: #17233d;
+  --muted: #eef0f7;
+  --muted-foreground: #667085;
+  --accent: #ededff;
+  --accent-foreground: #4546a8;
+  --destructive: #d92d20;
+  --border: #dfe4ee;
+  --input: #dfe4ee;
+  --ring: #7b7cff;
+  --radius: 0.875rem;
+}
+
+/* Expõe as variáveis acima como nomes entendidos pelas classes do Tailwind. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+/* Faz largura e altura incluírem borda e preenchimento. */
+* { box-sizing: border-box; }
+/* Mantém a cor de fundo também fora da área do body. */
+html { background: var(--background); }
+/* Define o fundo, a cor do texto e a família tipográfica de toda a página. */
+body {
+  margin: 0;
+  background: radial-gradient(circle at 80% 8%, rgba(123, 124, 255, 0.09), transparent 26rem), var(--background);
+  color: var(--foreground);
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+/* Faz botões e campos de texto herdarem a mesma fonte do restante da página. */
+button, textarea { font: inherit; }
+/* Personaliza as cores quando o usuário seleciona um trecho de texto. */
+::selection { background: #d7ff5f; color: #17233d; }
